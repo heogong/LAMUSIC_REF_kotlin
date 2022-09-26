@@ -12,11 +12,11 @@ class StudentRouter(private val studentHandler: StudentHandler) {
     fun apiRouter() = coRouter {
         "/student".nest{
             accept(APPLICATION_JSON).nest {
-                GET("/", studentHandler::getAllStudentHandler)
+                GET("", studentHandler::getAllStudentHandler)
                 POST("", studentHandler::createStudentHandler)
                 "/{id}".nest {
                     PATCH("", studentHandler::updateStudentHandler)
-                    GET("/", studentHandler::getStudentHandler)
+                    GET("", studentHandler::getStudentHandler)
                 }
         }}
     }

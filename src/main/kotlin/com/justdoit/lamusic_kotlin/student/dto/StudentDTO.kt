@@ -1,10 +1,8 @@
 package com.justdoit.lamusic_kotlin.student.dto
 
+import com.justdoit.lamusic_kotlin.common.constant.RegistrationStatus
 import com.justdoit.lamusic_kotlin.student.entity.Student
-import kotlinx.coroutines.flow.flow
-import org.springframework.web.reactive.function.server.ServerResponse
-import java.util.Date
-import java.util.concurrent.Flow
+import java.util.*
 
 class StudentDTO {
 
@@ -14,7 +12,26 @@ class StudentDTO {
             var gender: String? = null,
             var phone: String? = null,
             var address: String? = null,
-            var description: String? = null
+            var description: String? = null,
+            var status: RegistrationStatus,
+
+            // 개인 레슨 정보
+            var startLessonDate: String?= null,
+            var endLessonDate: String?= null,
+//            var classDates: Int,
+//            var lessonTerm: Int,
+//            var lessonWeek: Int,
+
+            // 결제 정보
+            var cashAmount: String?= null,
+            var accountAmount: String?= null,
+            var cardAmount: String?= null,
+            var cardCompanyInfo: String?= null,
+            var paymentMemo: String?= null,
+            var accountDate: Date?= null,
+
+            // 수업정보
+            var lessonCourseReqs: List<StudentLessonCourseDTO.LessonCourseReq>
     )
 
     data class StudentResp(

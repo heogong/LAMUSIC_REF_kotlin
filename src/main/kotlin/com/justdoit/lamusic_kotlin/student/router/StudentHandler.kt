@@ -1,6 +1,5 @@
 package com.justdoit.lamusic_kotlin.student.router
 
-import com.justdoit.lamusic_kotlin.student.repository.StudentRepository
 import com.justdoit.lamusic_kotlin.student.service.StudentService
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component

@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service
 @Service
 class StudentService(private val studentRepository: StudentRepository) {
 
-    suspend fun getStudent(id : String) : StudentDTO.StudentResp {
-        return StudentDTO.StudentResp.createStudentResp(studentRepository.findById(id)!!)
-    }
+    suspend fun getStudent(id : String) : StudentDTO.StudentResp =
+        StudentDTO.StudentResp.createStudentResp(studentRepository.findById(id)!!)
 
     suspend fun createStudent(studentReq: StudentDTO.StudentReq?): StudentDTO.StudentResp {
         val student = studentRepository.save(Student.createStudent(studentReq!!))
@@ -24,8 +23,6 @@ class StudentService(private val studentRepository: StudentRepository) {
         return StudentDTO.StudentResp.createStudentResp(studentRepository.save(student))
     }
 
-    suspend fun getAllStudent(): Flow<StudentDTO.StudentResp> {
-        return studentRepository.findAll()
-                .map { StudentDTO.StudentResp.createStudentResp(it)}
-    }
+    suspend fun getAllStudent(): Flow<StudentDTO.StudentResp> =
+            studentRepository.findAll().map { StudentDTO.StudentResp.createStudentResp(it)}
 }
