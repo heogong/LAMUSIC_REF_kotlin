@@ -1,4 +1,4 @@
-package com.justdoit.lamusic_kotlin.student.router
+package com.justdoit.lamusic_kotlin.student.handler
 
 import com.justdoit.lamusic_kotlin.student.service.StudentService
 import org.springframework.http.MediaType
