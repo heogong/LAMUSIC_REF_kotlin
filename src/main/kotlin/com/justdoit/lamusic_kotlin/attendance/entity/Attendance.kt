@@ -17,7 +17,7 @@ class Attendance(
         var studentId: String,
         var valid: Valid,
         var createDate: Date,
-        var updateDate: Date,
+        var updateDate: Date
 ) {
 
     fun validAttendance(): Boolean {
@@ -26,15 +26,16 @@ class Attendance(
 
     fun updateUnValidAttendance(): Attendance {
         this.valid = Valid.N
+        this.updateDate = Date()
         return this
     }
 
     companion object{
-        fun createAttendance(req: AttendanceDTO.AttendanceReq, attendanceType: AttendanceType): Attendance {
+        fun createAttendance(req: AttendanceDTO.AttendanceReq, type: AttendanceType): Attendance {
             return req.run {
                 Attendance(
                         attendanceDate = attendanceDate,
-                        attendanceType = attendanceType,
+                        attendanceType = type,
                         attendanceMemo = attendanceMemo,
                         studentId = studentId,
                         valid = Valid.Y,
