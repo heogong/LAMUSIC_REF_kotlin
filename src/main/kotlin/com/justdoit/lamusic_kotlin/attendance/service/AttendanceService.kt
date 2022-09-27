@@ -4,10 +4,13 @@ import com.justdoit.lamusic_kotlin.attendance.dto.AttendanceDTO
 import com.justdoit.lamusic_kotlin.attendance.entity.Attendance
 import com.justdoit.lamusic_kotlin.attendance.repository.AttendanceRepository
 import com.justdoit.lamusic_kotlin.student.service.StudentService
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
@@ -16,16 +19,17 @@ class AttendanceService(
         private val studentService: StudentService)
 {
 
-    suspend fun createAttendance(req: AttendanceDTO.AttendanceReq?): Flow<AttendanceDTO.AttendanceResp> {
-        return attendanceRepository.saveAll(req!!.attendanceType.map { Attendance.createAttendance(req, it) })
-                .map { AttendanceDTO.AttendanceResp.createAttendanceResp(it) }
-    }
+    private val log = LoggerFactory.getLogger(javaClass)
+
+    suspend fun createAttendance(req: AttendanceDTO.AttendanceReq?): Flow<AttendanceDTO.AttendanceResp> =
+            attendanceRepository.saveAll(req!!.attendanceType.map { Attendance.createAttendance(req, it) })
+                    .map { AttendanceDTO.AttendanceResp.createAttendanceResp(it) }
 
     suspend fun getAttendance(date: String, id: String): AttendanceDTO.AttendanceStudentStatusResp {
-        val attendance = attendanceRepository.findByAttendanceDateAndStudentId(date, id)
+        val attendanceList = attendanceRepository.findByAttendanceDateAndStudentId(date, id)
                 .filter { it.validAttendance() }.toList()
-        val student = studentService.getStudent(id)
-        return AttendanceDTO.AttendanceStudentStatusResp.createAttendanceStudentStatusResp(attendance, student)
+        val student = coroutineScope { async { studentService.getStudent(id) } }
+        return AttendanceDTO.AttendanceStudentStatusResp.createAttendanceStudentStatusResp(attendanceList, student.await())
     }
 
     suspend fun updateAttendance(req: AttendanceDTO.AttendanceReq?): Flow<AttendanceDTO.AttendanceResp> {
