@@ -5,6 +5,7 @@ import com.justdoit.lamusic_kotlin.student.entity.Student
 import com.justdoit.lamusic_kotlin.student.repository.StudentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service

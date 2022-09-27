@@ -19,10 +19,7 @@ class Attendance(
         var createDate: Date,
         var updateDate: Date
 ) {
-
-    fun validAttendance(): Boolean {
-        return this.valid == Valid.Y
-    }
+    fun validAttendance(): Boolean = this.valid == Valid.Y
 
     fun updateUnValidAttendance(): Attendance {
         this.valid = Valid.N
@@ -45,5 +42,4 @@ class Attendance(
             }
         }
     }
-
 }
