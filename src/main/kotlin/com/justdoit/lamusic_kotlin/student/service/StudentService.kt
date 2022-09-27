@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service
 class StudentService(private val studentRepository: StudentRepository) {
 
     suspend fun getStudent(id : String) : StudentDTO.StudentResp =
-        StudentDTO.StudentResp.createStudentResp(studentRepository.findById(id)!!)
+        StudentDTO.StudentResp.createStudentResp(
+                studentRepository.findById(id) ?: throw NoSuchElementException("not find user"))
 
     suspend fun createStudent(studentReq: StudentDTO.StudentReq?): StudentDTO.StudentResp {
         val student = studentRepository.save(Student.createStudent(studentReq!!))
@@ -19,8 +20,9 @@ class StudentService(private val studentRepository: StudentRepository) {
     }
 
     suspend fun updateStudent(id: String, studentReq: StudentDTO.StudentReq?): StudentDTO.StudentResp {
-        val student = studentRepository.findById(id)!!.updateStudent(studentReq!!)
-        return StudentDTO.StudentResp.createStudentResp(studentRepository.save(student))
+        val student = studentRepository.findById(id) ?: throw NoSuchElementException("not find user")
+        return StudentDTO.StudentResp.createStudentResp(
+                studentRepository.save(student.updateStudent(studentReq!!)))
     }
 
     suspend fun getAllStudent(): Flow<StudentDTO.StudentResp> =
